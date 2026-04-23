@@ -1,35 +1,34 @@
 # AWS Serverless CRUD App
 
-A simple full-stack serverless application built using AWS services.
+A full-stack serverless CRUD application built with AWS.
 
 ## Features
-- Create (Save a name)
-- Read (Display saved names)
-- Update (Edit a name)
-- Delete (Remove a name)
+- Create records
+- Read saved records
+- Update names
+- Delete records
+
+## AWS Services Used
+- Amazon S3 for static website hosting
+- Amazon API Gateway for API routes
+- AWS Lambda for backend logic
+- Amazon DynamoDB for data storage
 
 ## Architecture
-- Frontend: Amazon S3 (Static Website)
-- Backend: AWS Lambda (Node.js)
-- API: Amazon API Gateway
-- Database: Amazon DynamoDB
-
-## How it works
-1. User interacts with the UI
-2. Frontend sends request to API Gateway
-3. API Gateway triggers Lambda
-4. Lambda performs CRUD operations in DynamoDB
-5. Response is returned and displayed in the UI
-
-## Technologies Used
-- HTML, CSS, JavaScript
-- AWS Lambda
-- API Gateway
-- DynamoDB
-- S3 Static Hosting
+Frontend (HTML/CSS/JavaScript) → API Gateway → Lambda → DynamoDB
 
 ## What I Learned
-- Building a serverless architecture
-- Connecting frontend to backend APIs
-- Working with DynamoDB (CRUD operations)
-- Debugging real-world issues (CORS, routing, regions)
+- Building a serverless architecture on AWS
+- Connecting frontend and backend using API calls
+- Performing CRUD operations with DynamoDB
+- Debugging CORS, API routes, Lambda logic, and region issues
+- Deploying a frontend to S3 and storing code in GitHub
+
+## Project Status
+Working and deployed
+
+## Future Improvements
+- Authentication with Amazon Cognito
+- Better search and filtering
+- Improved UI/UX
+- CI/CD pipeline for automated deployment
