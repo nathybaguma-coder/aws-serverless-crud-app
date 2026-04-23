@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Appointment Tracker</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f4f7fb;
+      color: #1f2937;
+    }
+
+    .container {
+      max-width: 700px;
+      margin: 50px auto;
+      background: white;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+    }
+
+    h1 {
+      margin-top: 0;
+      margin-bottom: 10px;
+      font-size: 32px;
+    }
+
+    .subtitle {
+      margin-top: 0;
+      margin-bottom: 25px;
+      color: #6b7280;
+    }
+
+    .form-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 18px;
+    }
+
+    input {
+      flex: 1;
+      min-width: 220px;
+      padding: 12px 14px;
+      border: 1px solid #d1d5db;
+      border-radius: 10px;
+      font-size: 16px;
+    }
+
+    button {
+      border: none;
+      padding: 12px 16px;
+      border-radius: 10px;
+      font-size: 15px;
+      cursor: pointer;
+    }
+
+    .primary-btn {
+      background-color: #2563eb;
+      color: white;
+    }
+
+    .secondary-btn {
+      background-color: #e5e7eb;
+      color: #111827;
+    }
+
+    .edit-btn {
+      background-color: #f59e0b;
+      color: white;
+      padding: 8px 12px;
+      font-size: 14px;
+    }
+
+    .delete-btn {
+      background-color: #ef4444;
+      color: white;
+      padding: 8px 12px;
+      font-size: 14px;
+    }
+
+    .actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    #result {
+      margin: 18px 0;
+      padding: 12px 14px;
+      background-color: #eff6ff;
+      border: 1px solid #bfdbfe;
+      border-radius: 10px;
+      color: #1d4ed8;
+      min-height: 20px;
+    }
+
+    .list-title {
+      margin-top: 28px;
+      margin-bottom: 12px;
+      font-size: 20px;
+    }
+
+    #nameList {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    #nameList li {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      padding: 14px;
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      margin-bottom: 12px;
+      background-color: #fafafa;
+    }
+
+    .item-text {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .item-name {
+      font-weight: bold;
+    }
+
+    .item-date {
+      font-size: 13px;
+      color: #6b7280;
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        margin: 20px;
+        padding: 20px;
+      }
+
+      #nameList li {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .actions {
+        width: 100%;
+        flex-direction: column;
+      }
+
+      .edit-btn,
+      .delete-btn {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Appointment Tracker</h1>
+    <p class="subtitle">Save names, edit them, view saved records, and delete entries.</p>
+
+    <div class="form-row">
+      <input id="nameInput" type="text" placeholder="Enter your name" />
+      <button class="primary-btn" onclick="callAPI()">Save Name</button>
+      <button class="secondary-btn" onclick="showNames()">Show Saved Names</button>
+    </div>
+
+    <div id="result">Ready.</div>
+
+    <h2 class="list-title">Saved Names</h2>
+    <ul id="nameList"></ul>
+  </div>
+
+  <script>
+    async function callAPI() {
+      const name = document.getElementById("nameInput").value.trim();
+
+      if (!name) {
+        document.getElementById("result").innerText = "Please enter your name.";
+        return;
+      }
+
+      try {
+        const response = await fetch(`https://i3sedosgv3.execute-api.us-east-1.amazonaws.com/hello?name=${encodeURIComponent(name)}`);
+        const data = await response.text();
+        document.getElementById("result").innerText = data;
+        document.getElementById("nameInput").value = "";
+        showNames();
+      } catch (error) {
+        document.getElementById("result").innerText = "Error calling API.";
+        console.error(error);
+      }
+    }
+
+    async function showNames() {
+      try {
+        const response = await fetch("https://i3sedosgv3.execute-api.us-east-1.amazonaws.com/names");
+        const data = await response.json();
+
+        const list = document.getElementById("nameList");
+        list.innerHTML = "";
+
+        if (data.length === 0) {
+          list.innerHTML = "<li>No saved names yet.</li>";
+          document.getElementById("result").innerText = "No names found.";
+          return;
+        }
+
+        data.forEach(item => {
+          const li = document.createElement("li");
+
+          const textDiv = document.createElement("div");
+          textDiv.className = "item-text";
+
+          const nameSpan = document.createElement("span");
+          nameSpan.className = "item-name";
+          nameSpan.innerText = item.name;
+
+          const dateSpan = document.createElement("span");
+          dateSpan.className = "item-date";
+          dateSpan.innerText = item.createdAt || "No date available";
+
+          textDiv.appendChild(nameSpan);
+          textDiv.appendChild(dateSpan);
+
+          const actionsDiv = document.createElement("div");
+          actionsDiv.className = "actions";
+
+          const editButton = document.createElement("button");
+          editButton.className = "edit-btn";
+          editButton.innerText = "Edit";
+          editButton.onclick = () => updateName(item.id, item.name);
+
+          const deleteButton = document.createElement("button");
+          deleteButton.className = "delete-btn";
+          deleteButton.innerText = "Delete";
+          deleteButton.onclick = () => deleteName(item.id);
+
+          actionsDiv.appendChild(editButton);
+          actionsDiv.appendChild(deleteButton);
+
+          li.appendChild(textDiv);
+          li.appendChild(actionsDiv);
+
+          list.appendChild(li);
+        });
+
+        document.getElementById("result").innerText = "Saved names loaded.";
+      } catch (error) {
+        document.getElementById("result").innerText = "Error loading names.";
+        console.error(error);
+      }
+    }
+
+    async function deleteName(id) {
+      if (!confirm("Are you sure you want to delete this item?")) {
+        return;
+      }
+
+      try {
+        const response = await fetch(`https://i3sedosgv3.execute-api.us-east-1.amazonaws.com/delete?id=${encodeURIComponent(id)}`);
+        const data = await response.text();
+
+        document.getElementById("result").innerText = data;
+        showNames();
+      } catch (error) {
+        document.getElementById("result").innerText = "Error deleting name.";
+        console.error(error);
+      }
+    }
+
+    async function updateName(id, currentName) {
+      const newName = prompt("Enter the new name:", currentName);
+
+      if (!newName || !newName.trim()) {
+        document.getElementById("result").innerText = "Update cancelled or invalid name.";
+        return;
+      }
+
+      try {
+        const response = await fetch(
+          `https://i3sedosgv3.execute-api.us-east-1.amazonaws.com/update?id=${encodeURIComponent(id)}&name=${encodeURIComponent(newName.trim())}`
+        );
+        const data = await response.text();
+
+        document.getElementById("result").innerText = data;
+        showNames();
+      } catch (error) {
+        document.getElementById("result").innerText = "Error updating name.";
+        console.error(error);
+      }
+    }
+  </script>
+</body>
+</html>
