@@ -1,34 +1,58 @@
-# AWS Serverless CRUD App
+# AWS Serverless Appointment Workflow App
 
-A full-stack serverless CRUD application built with AWS.
+A full-stack serverless application built using AWS services, demonstrating CRUD operations, event-driven architecture, and workflow orchestration.
 
 ## Features
-- Create records
+- Create records (save a name)
 - Read saved records
-- Update names
+- Update existing records
 - Delete records
+- Send email notifications on new records
+- Orchestrate backend logic using Step Functions
+
+## Architecture
+
+Frontend (HTML, CSS, JavaScript hosted on S3)  
+→ API Gateway  
+→ Lambda (trigger)  
+→ AWS Step Functions  
+→ Save Lambda (DynamoDB)  
+→ Notification Lambda (SNS → Email)
+
+## Workflow
+
+1. User submits a name from the frontend
+2. API Gateway triggers a Lambda function
+3. Lambda starts a Step Functions execution
+4. Step Functions orchestrates:
+   - Saving the record to DynamoDB
+   - Sending a notification using SNS
+5. User receives confirmation and email notification
 
 ## AWS Services Used
 - Amazon S3 for static website hosting
-- Amazon API Gateway for API routes
+- Amazon API Gateway for API routing
 - AWS Lambda for backend logic
+- AWS Step Functions for workflow orchestration
 - Amazon DynamoDB for data storage
+- Amazon SNS for notifications
 
-## Architecture
-Frontend (HTML/CSS/JavaScript) → API Gateway → Lambda → DynamoDB
+## Key Concepts Demonstrated
+- Serverless architecture
+- Event-driven design
+- Workflow orchestration using Step Functions
+- Separation of concerns using multiple Lambda functions
+- Integration between multiple AWS services
 
 ## What I Learned
-- Building a serverless architecture on AWS
-- Connecting frontend and backend using API calls
-- Performing CRUD operations with DynamoDB
-- Debugging CORS, API routes, Lambda logic, and region issues
-- Deploying a frontend to S3 and storing code in GitHub
-
-## Project Status
-Working and deployed
+- How to design and build serverless applications using AWS
+- How to connect frontend applications to backend APIs
+- How to orchestrate workflows using Step Functions
+- How to structure applications using microservice principles
+- How to debug real-world issues such as CORS, routing, and deployment
 
 ## Future Improvements
-- Authentication with Amazon Cognito
-- Better search and filtering
-- Improved UI/UX
-- CI/CD pipeline for automated deployment
+- Add user authentication with Amazon Cognito
+- Improve UI/UX design
+- Add filtering and search features
+- Implement CI/CD pipeline for automated deployment
