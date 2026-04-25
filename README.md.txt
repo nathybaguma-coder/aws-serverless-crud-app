@@ -56,3 +56,4 @@ Frontend (HTML, CSS, JavaScript hosted on S3)
 - Improve UI/UX design
 - Add filtering and search features
 - Implement CI/CD pipeline for automated deployment
+- Used CloudWatch logs to debug Lambda errors and troubleshoot Step Functions workflows
