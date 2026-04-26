@@ -57,3 +57,4 @@ Frontend (HTML, CSS, JavaScript hosted on S3)
 - Add filtering and search features
 - Implement CI/CD pipeline for automated deployment
 - Used CloudWatch logs to debug Lambda errors and troubleshoot Step Functions workflows
+- Added Step Functions validation, retry logic, and failure alerting with SNS
