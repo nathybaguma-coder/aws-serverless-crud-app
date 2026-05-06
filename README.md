@@ -58,3 +58,13 @@ Frontend (HTML, CSS, JavaScript hosted on S3)
 - Implement CI/CD pipeline for automated deployment
 - Used CloudWatch logs to debug Lambda errors and troubleshoot Step Functions workflows
 - Added Step Functions validation, retry logic, and failure alerting with SNS
+
+## CI/CD
+
+This project uses AWS CodePipeline to automatically deploy frontend changes from GitHub to an Amazon S3 static website bucket.
+
+Flow:
+
+GitHub commit → CodePipeline source stage → S3 deploy stage
+
+When changes are pushed to the main branch, the pipeline automatically deploys the updated frontend files to S3.
