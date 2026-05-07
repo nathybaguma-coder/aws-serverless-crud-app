@@ -1,0 +1,9 @@
+version: 0.2
+
+phases:
+  build:
+    commands:
+      - echo "Deploying Lambda function..."
+      - cd backend/lambda
+      - zip -r function.zip .
+      - aws lambda update-function-code --function-name my-first-lambda --zip-file fileb://function.zip
