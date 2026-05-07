@@ -6,4 +6,4 @@ phases:
       - echo "Deploying Lambda function..."
       - cd backend/lambda
       - zip -r function.zip .
-      - aws lambda update-function-code --function-name my-first-lambda --zip-file fileb://function.zip
+      - aws lambda update-function-code --region us-east-1 --function-name my-first-lambda --zip-file fileb://function.zip
