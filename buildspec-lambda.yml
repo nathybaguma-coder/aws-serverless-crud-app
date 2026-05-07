@@ -3,7 +3,14 @@ version: 0.2
 phases:
   build:
     commands:
-      - echo "Deploying Lambda function..."
+      - echo "Current folder:"
+      - pwd
+      - echo "Checking Lambda file:"
+      - ls -la backend/lambda
+      - echo "Packaging Lambda function..."
       - cd backend/lambda
-      - zip -r function.zip .
-      - aws lambda update-function-code --region us-east-1 --function-name my-first-lambda --zip-file fileb://function.zip
+      - zip -r /tmp/function.zip .
+      - echo "Checking zip file:"
+      - ls -lh /tmp/function.zip
+      - echo "Deploying Lambda function..."
+      - aws lambda update-function-code --region us-east-1 --function-name my-first-lambda --zip-file fileb:///tmp/function.zip
